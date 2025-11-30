@@ -1,0 +1,81 @@
+version: "1.0"
+
+providers:
+
+  azure-embed:
+    provider_type: azure_openai
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    api_key: "${AZURE_OPENAI_KEY}"
+    model: "text-embedding-3-large"
+    embedding_dim: 3072
+    timeout_ms: 5000
+    retries: 3
+
+  hf-inference:
+    provider_type: huggingface_api
+    endpoint: "https://api-inference.huggingface.co/pipeline/feature-extraction/${HF_MODEL}"
+    api_key: "${HF_API_KEY}"
+    model: "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_dim: 384
+    timeout_ms: 6000
+    retries: 3
+
+  hf-endpoint:
+    provider_type: huggingface_endpoint
+    endpoint: "${HF_ENDPOINT_URL}"
+    api_key: "${HF_ENDPOINT_KEY}"
+    model: "sentence-transformers/multilingual-e5-large"
+    embedding_dim: 1024
+    timeout_ms: 7000
+    retries: 3
+
+  groq-embed:
+    provider_type: groq
+    endpoint: "https://api.groq.com/openai/v1/embeddings"
+    api_key: "${GROQ_API_KEY}"
+    model: "nomic-embed-text"
+    embedding_dim: 768
+    timeout_ms: 5000
+    retries: 2
+
+  ollama-embed:
+    provider_type: ollama
+    endpoint: "http://ollama-gateway/api/embeddings"
+    api_key: ""
+    model: "nomic-embed-text"
+    embedding_dim: 768
+    timeout_ms: 3000
+    retries: 1
+
+routes:
+
+  vendor.embedding:
+    strategy: primary-fallback
+    providers:
+      - azure-embed
+      - hf-endpoint
+      - groq-embed
+
+  authoring.embedding:
+    strategy: weighted
+    providers:
+      - hf-inference
+      - azure-embed
+      - groq-embed
+    weights:
+      - 60
+      - 30
+      - 10
+
+  qagen.embedding:
+    strategy: primary-fallback
+    providers:
+      - azure-embed
+      - hf-endpoint
+
+  default:
+    strategy: primary-fallback
+    providers:
+      - azure-embed
+      - hf-inference
+      - groq-embed

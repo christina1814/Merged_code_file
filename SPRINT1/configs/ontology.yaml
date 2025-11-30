@@ -1,0 +1,101 @@
+doc_kinds:
+  troubleshooting:
+    keywords:
+      - troubleshoot
+      - error
+      - failure
+      - cannot
+      - does not work
+      - symptom
+  how-to:
+    keywords:
+      - how to
+      - step-by-step
+      - configure
+      - set up
+      - procedure
+      - guide
+  reference:
+    keywords:
+      - reference
+      - api
+      - schema
+      - parameter
+      - configuration options
+  release-notes:
+    keywords:
+      - release notes
+      - changelog
+      - what's new
+  concept:
+    keywords:
+      - overview
+      - introduction
+      - architecture
+      - design
+  general:
+    keywords: []
+
+areas:
+  network:
+    keywords:
+      - network
+      - vlan
+      - dns
+      - vpn
+      - router
+      - switch
+  compute:
+    keywords:
+      - vm
+      - virtual machine
+      - compute
+      - server
+      - cpu
+  storage:
+    keywords:
+      - disk
+      - volume
+      - storage
+      - bucket
+      - blob
+      - share
+  security:
+    keywords:
+      - security
+      - encryption
+      - tls
+      - ssl
+      - certificate
+      - iam
+      - access policy
+  observability:
+    keywords:
+      - logs
+      - log analytics
+      - metrics
+      - traces
+      - apm
+      - monitoring
+  general:
+    keywords: []
+
+llm_fallback:
+  enabled: true
+  use_route: "ontology.classify"
+  min_rule_score: 0.6
+  labels:
+    doc_kind:
+      - troubleshooting
+      - how-to
+      - reference
+      - release-notes
+      - concept
+      - general
+    area:
+      - network
+      - compute
+      - storage
+      - security
+      - observability
+      - general

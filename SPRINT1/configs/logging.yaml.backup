@@ -1,0 +1,38 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  json:
+    format: >
+      {
+        "ts": "%(asctime)s",
+        "level": "%(levelname)s",
+        "logger": "%(name)s",
+        "message": "%(message)s",
+        "trace_id": "%(trace_id)s",
+        "span_id": "%(span_id)s",
+        "parent_span_id": "%(parent_span_id)s",
+        "component": "%(component)s",
+        "stage": "%(stage)s",
+        "feature": "%(feature)s",
+        "ka_code": "%(ka_code)s",
+        "duration_ms": "%(duration_ms)s",
+        "user_id": "%(user_id)s",
+        "tenant_id": "%(tenant_id)s"
+      }
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: json
+
+loggers:
+  sensei:
+    level: DEBUG
+    propagate: False
+    handlers: [console]
+
+root:
+  level: INFO
+  handlers: [console]

@@ -1,0 +1,26 @@
+postgres:
+  dsn: "${POSTGRES_DSN}"
+  min_pool: 2
+  max_pool: 10
+  max_retries: 3
+
+redis:
+  url: "${REDIS_URL}"
+  ttl_seconds: 604800
+
+kafka:
+  bootstrap_servers: "${KAFKA_BOOTSTRAP}"
+  producer_config:
+    linger.ms: 10
+    acks: "all"
+  consumer_config:
+    enable.auto.commit: false
+    auto.offset.reset: "earliest"
+
+blob:
+  conn_str: "${AZURE_BLOB_CONN_STR}"
+  container: "sensei-v2"
+
+embedding:
+  expected_dim: 1536
+  ttl_seconds: 604800

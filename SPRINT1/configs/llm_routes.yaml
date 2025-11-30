@@ -1,0 +1,57 @@
+version: "1.0"
+
+providers:
+
+  azure-gen:
+    provider_type: azure_openai
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    api_key: "${AZURE_OPENAI_KEY}"
+    model: "gpt-4o-mini"
+    timeout_ms: 15000
+    retries: 3
+
+  groq-gen:
+    provider_type: groq
+    endpoint: "https://api.groq.com/v1/chat/completions"
+    api_key: "${GROQ_API_KEY}"
+    model: "llama3-70b"
+    timeout_ms: 12000
+    retries: 2
+
+  hf-gen:
+    provider_type: huggingface_api
+    endpoint: "https://api-inference.huggingface.co/models/${HF_LLM_MODEL}"
+    api_key: "${HF_API_KEY}"
+    model: "${HF_LLM_MODEL}"
+    timeout_ms: 12000
+    retries: 2
+
+routes:
+
+  authoring.generate:
+    strategy: primary-fallback
+    providers:
+      - azure-gen
+      - groq-gen
+      - hf-gen
+
+  authoring.enrich:
+    strategy: primary-fallback
+    providers:
+      - azure-gen
+      - hf-gen
+
+  vendor.qagen:
+    strategy: weighted
+    providers:
+      - azure-gen
+      - groq-gen
+    weights:
+      - 70
+      - 30
+
+  default:
+    strategy: primary-fallback
+    providers:
+      - azure-gen
+      - groq-gen
